@@ -4,22 +4,66 @@
 
 CloudClimb is preparing to deploy **Memos**, an open-source self-hosted note-taking application.
 
-Before the application can be deployed, the cloud engineering team needs to build the Azure network foundation that will support the application, database, and management resources as Project 01 grows.
+Later in Project 01, Memos will connect to a separate **PostgreSQL database using Azure Database for PostgreSQL**.
 
-You are **not deploying Memos during Week 1**.
+Before any application, database, or compute resources are deployed, the cloud engineering team needs to build the Azure network foundation that will support the environment throughout the project.
 
-Your task is to design and deploy the Azure network that Memos will eventually live inside.
+You are **not deploying Memos, PostgreSQL, compute resources, or an application entry point during Week 1**.
+
+Your task is to design and deploy the Azure network that those resources will eventually use.
 
 ---
 
 ## Objective
 
-Create a segmented Azure network that can support:
+Create a segmented Azure network that can later support:
 
 - Application resources
-- Database/backend resources
-- Management/administrative resources
+- Private database/backend resources
+- Private management/administrative resources
+- Future public application access at the resource or service level
 
+The network created this week will continue to be used and expanded throughout Project 01.
+
+This is not a disposable lab.
+
+---
+
+## Requirements
+
+Your Azure environment must include:
+
+- One Resource Group
+- One Virtual Network
+- One application subnet
+- One data/backend subnet
+- One management subnet
+- Network Security Groups
+- Appropriate routing
+- A documented CIDR/IP addressing plan
+- Consistent resource naming
+- Project/environment tags
+- A simple architecture diagram
+
+Your subnet ranges must not overlap.
+
+---
+
+## Why Azure Uses One Subnet Per Tier
+
+Azure networking works differently from AWS.
+
+In AWS, a subnet exists inside a single Availability Zone. Because of that, the AWS track uses multiple subnets across multiple Availability Zones.
+
+Azure subnets are **regional** and are not tied to one Availability Zone.
+
+Because of this, the Azure track does not need duplicate subnets such as:
+
+```text
+app-zone-1
+app-zone-2
+data-zone-1
+data-zone-2
 The goal is to build a foundation that will continue to be used throughout Project 01.
 
 This is not a disposable lab.

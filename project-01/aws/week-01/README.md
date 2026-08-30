@@ -483,36 +483,3 @@ Your AWS environment must include:
 
 Your subnet ranges must not overlap.
 
----
-
-## Why Two Availability Zones?
-
-In AWS, a subnet exists inside a single Availability Zone.
-
-Later in Project 01, we plan to introduce services that require or benefit from networking across multiple Availability Zones.
-
-For example:
-
-- An Application Load Balancer requires subnets across multiple Availability Zones
-- Amazon RDS uses a DB subnet group containing subnets across multiple Availability Zones
-
-Designing the network across two Availability Zones now helps avoid having to redesign the VPC and IP addressing plan later.
-
----
-
-## Planned Network Layout
-
-Your Week 1 network should follow this general structure:
-
-```text
-VPC
-│
-├── Availability Zone A
-│   ├── App-A          Public
-│   ├── Data-A         Private
-│   └── Management-A   Private
-│
-└── Availability Zone B
-    ├── App-B          Public
-    ├── Data-B         Private
-    └── Management-B   Private

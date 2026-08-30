@@ -4,23 +4,25 @@
 
 CloudClimb is preparing to deploy **Memos**, an open-source self-hosted note-taking application.
 
-Before the application can be deployed, the cloud engineering team needs to build the AWS network foundation that will support the application, database, and management resources as Project 01 grows.
+Later in Project 01, Memos will connect to a separate **PostgreSQL database using Amazon RDS**.
 
-You are **not deploying Memos during Week 1**.
+Before any application, database, or compute resources are deployed, the cloud engineering team needs to build the AWS network foundation that will support the environment throughout the project.
 
-Your task is to design and deploy the AWS network that Memos will eventually live inside.
+You are **not deploying Memos, RDS, compute resources, or a load balancer during Week 1**.
+
+Your task is to design and deploy the AWS network that those resources will eventually use.
 
 ---
 
 ## Objective
 
-Create a segmented AWS network that can support:
+Create a segmented AWS network across two Availability Zones that can later support:
 
-- Application resources
-- Database/backend resources
-- Management/administrative resources
+- Public application resources
+- Private database/backend resources
+- Private management/administrative resources
 
-The goal is to build a foundation that will continue to be used throughout Project 01.
+The network created this week will continue to be used and expanded throughout Project 01.
 
 This is not a disposable lab.
 
@@ -31,72 +33,50 @@ This is not a disposable lab.
 Your AWS environment must include:
 
 - One VPC
-- An application subnet
-- A data/backend subnet
-- A management subnet
-- A documented CIDR/IP addressing plan
+- At least two Availability Zones
+- Two public application subnets, one in each Availability Zone
+- Two private data/backend subnets, one in each Availability Zone
+- Two private management subnets, one in each Availability Zone
+- One Internet Gateway
 - Appropriate route tables and routing
 - Network-level security controls
+- A documented CIDR/IP addressing plan
 - Consistent resource naming
 - Project/environment tags
 - A simple architecture diagram
 
-You may add additional network components if your design requires them.
+Your subnet ranges must not overlap.
 
 ---
 
-## AWS Services
+## Why Two Availability Zones?
 
-You will likely work with:
+In AWS, a subnet exists inside a single Availability Zone.
 
-- Amazon VPC
-- Subnets
-- Route Tables
-- Security Groups
-- Resource Tags
+Later in Project 01, we plan to introduce services that require or benefit from networking across multiple Availability Zones.
 
-You may also consider services such as:
+For example:
 
-- Internet Gateway
-- Network ACLs
-- NAT Gateway
+- An Application Load Balancer requires subnets across multiple Availability Zones
+- Amazon RDS uses a DB subnet group containing subnets across multiple Availability Zones
 
-Only add additional services if your architecture actually requires them.
-
-Do not deploy resources simply because they are available.
-
-Be prepared to explain why each major resource exists.
+Designing the network across two Availability Zones now helps avoid having to redesign the VPC and IP addressing plan later.
 
 ---
 
-## Network Design
+## Planned Network Layout
 
-At minimum, your VPC should contain three logical network segments:
-
-### Application Subnet
-
-This subnet will eventually support the Memos application or related application resources.
-
-### Data Subnet
-
-This subnet will eventually support the Memos database or backend resources.
-
-Design this subnet with private database access in mind.
-
-### Management Subnet
-
-This subnet is reserved for management or administrative resources that may be introduced later in the project.
-
----
-
-## CIDR Planning
-
-You are responsible for choosing and documenting your own valid CIDR ranges.
-
-Example only:
+Your Week 1 network should follow this general structure:
 
 ```text
-VPC:                10.10.0.0/16
-Application Subnet: 10.10.1.0/24
-Data Subnet:        10.10.2.0/24
-Management Subnet:  10.10.3.0/24
+VPC
+│
+├── Availability Zone A
+│   ├── App-A          Public
+│   ├── Data-A         Private
+│   └── Management-A   Private
+│
+└── Availability Zone B
+    ├── App-B          Public
+    ├── Data-B         Private
+    └── Management-B   Private

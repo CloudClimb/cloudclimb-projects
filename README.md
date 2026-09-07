@@ -1,9 +1,27 @@
-````md
 # CloudClimb Projects
 
-CloudClimb is a community focused on giving people hands-on experience working through real-world cloud engineering projects.
+CloudClimb is a community built around hands-on cloud engineering.
 
-The goal is to build projects over time instead of completing random, disconnected labs. Contributors will work through requirements, infrastructure changes, troubleshooting, documentation, GitHub workflows, and team collaboration similar to how an actual cloud engineering team would operate.
+The goal is to work through realistic projects over time instead of completing random, disconnected labs. Each project is designed to build on the previous stage so contributors can practice the way cloud environments are actually planned, deployed, secured, troubleshot, documented, and improved.
+
+## What You’ll Practice
+
+Projects may include:
+
+- Cloud networking
+- Identity and access management
+- Infrastructure as Code
+- Terraform
+- Application infrastructure
+- Application deployment
+- CI/CD
+- Monitoring and logging
+- Security
+- Troubleshooting
+- Documentation
+- Git and GitHub workflows
+- Cost awareness
+- Architecture decisions
 
 ## Cloud Platforms
 
@@ -14,12 +32,188 @@ Current project tracks:
 
 GCP may be added as the community grows.
 
-## How Projects Work
+## How CloudClimb Projects Work
 
-Each project starts from the ground up and is broken into stages or checkpoints.
+Each project starts from the ground up and is broken into weekly stages.
 
-Each checkpoint builds on the previous one until contributors have a complete working cloud environment.
+Every week builds on the infrastructure created during the previous week.
 
+You are not completing separate labs.
+
+You are gradually building one complete cloud environment.
+
+A typical project may progress like this:
+
+```text
+Week 01
+Network Foundation
+        ↓
+Week 02
+Application Infrastructure
+        ↓
+Week 03
+Application + Database
+        ↓
+Week 04
+Automation + CI/CD
+        ↓
+Week 05
+Monitoring + Operations
+```
+
+AWS and Azure follow the same overall business scenario, but each platform uses the services and architecture that make the most sense for that cloud.
+
+## Current Project
+
+# Project 01
+
+Project 01 is the first CloudClimb multi-week cloud engineering project.
+
+Participants will build the infrastructure required to host an open-source application while working through networking, compute, database, security, automation, monitoring, and troubleshooting.
+
+The application used for Project 01 is **Memos**, an open-source self-hosted note-taking application.
+
+Project 01 is available for:
+
+- AWS
+- Azure
+
+Each platform follows the same overall scenario while using cloud-native services appropriate for that platform.
+
+[View Project 01](project-01/README.md)
+
+## Getting Started
+
+1. Open the Project 01 folder.
+2. Choose either the AWS or Azure track.
+3. Open the current week's README.
+4. Read the full requirements before deploying anything.
+5. Build the required infrastructure in your own AWS account or Azure subscription.
+6. Complete the acceptance criteria and deliverables for the week.
+7. Save your code, screenshots, notes, and architecture diagrams.
+8. Use the CloudClimb troubleshooting channels if you get stuck.
+
+You do **not** need to fork this repository to participate.
+
+You can:
+
+- build locally
+- create your own GitHub repository
+- fork this repository if you prefer
+
+This repository serves as the main source for CloudClimb project instructions.
+
+## Building Options
+
+During the early stages of Project 01, participants may use:
+
+- AWS Console
+- Azure Portal
+- Terraform
+
+Terraform is encouraged but is not required during the first stages of the project.
+
+As the project progresses, Infrastructure as Code, GitHub, and CI/CD will become more important.
+
+## Weekly Releases
+
+New project stages are released weekly.
+
+```text
+Monday
+New weekly module released
+
+Monday - Saturday
+Build, troubleshoot, document, and discuss
+
+Sunday
+Current week closes
+
+After the week closes
+Reference solution released
+
+Next Monday
+Next module begins
+```
+
+Reference solutions are intentionally not released at the beginning of each week.
+
+The goal is to give participants time to design, research, troubleshoot, and solve the requirements before comparing their work against a tested reference implementation.
+
+## Troubleshooting
+
+If you run into issues, use the AWS or Azure troubleshooting channels in the CloudClimb Discord.
+
+When asking for help, try to include:
+
+- What you are trying to deploy
+- Which cloud platform you are using
+- Portal / Console / Terraform
+- The error message
+- Screenshots if helpful
+- What you have already tried
+- What you think may be causing the issue
+
+Try to help other contributors without posting complete active-week solutions.
+
+The goal is to understand the problem, not just copy the answer.
+
+## Cost Responsibility
+
+All infrastructure is deployed into your own AWS account or Azure subscription.
+
+You are responsible for any cloud costs generated by your resources.
+
+CloudClimb projects are designed to keep costs as low as reasonably possible, especially during the early stages.
+
+Always review pricing before deploying resources and remove resources you no longer need.
+
+## Repository Structure
+
+```text
+cloudclimb-projects/
+├── README.md
+├── CONTRIBUTING.md
+└── project-01/
+    ├── README.md
+    ├── aws/
+    │   └── week-01/
+    └── azure/
+        └── week-01/
+```
+
+Additional weekly folders will be added as Project 01 progresses.
+
+## Contributing
+
+CloudClimb is built around collaboration.
+
+Contributors are encouraged to:
+
+- ask questions
+- help troubleshoot
+- share architecture ideas
+- document what they learn
+- improve project instructions
+- contribute through GitHub when appropriate
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+
+## Community Goal
+
+The goal is simple:
+
+```text
+Build
+Troubleshoot
+Document
+Collaborate
+Improve
+```
+
+By the end of each project, participants should have more than just a completed lab.
+
+They should have a cloud environment they understand, infrastructure they can explain, troubleshooting experience they can talk about, and a project they can confidently discuss in interviews.
 Projects may include:
 
 - Cloud networking

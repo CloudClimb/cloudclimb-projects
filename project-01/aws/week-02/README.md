@@ -1,18 +1,19 @@
-# Project 01 - Azure Week 02
+# Project 01 - AWS Week 02
 ## Application Compute, Network Integration, and Troubleshooting
 
 Welcome to Week 02 of Project 01.
 
-In Week 01, you built the Azure network foundation that the rest of this project will use.
+In Week 01, you built the AWS network foundation that the rest of this project will use.
 
 You should already have:
 
-- 1 Resource Group
-- 1 Virtual Network
-- 1 Application Subnet
-- 1 Data Subnet
-- 1 Management Subnet
-- Network Security Groups
+- 1 VPC
+- 2 Application Subnets across 2 Availability Zones
+- 2 Data Subnets across 2 Availability Zones
+- 2 Management Subnets across 2 Availability Zones
+- Internet Gateway
+- Public and private route tables
+- Security Groups
 - Consistent naming
 - Resource tags
 - Basic architecture documentation
@@ -34,5 +35,3 @@ The networking foundation has been completed.
 The application team is now ready for compute capacity that can eventually host the Memos application.
 
 Your task is to deploy a Linux workload host into the existing application tier, make sure it is connected to the correct network, restrict unnecessary access, verify that it can communicate as expected, and troubleshoot a connectivity problem without rebuilding the environment.
-
-You are not building a new environment.

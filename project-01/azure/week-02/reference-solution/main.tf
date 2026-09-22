@@ -1,127 +1,156 @@
-resource "aws_vpc" "main" {
-  cidr_block = var.vpc_cidr
-
-  tags = {
-    Name = "${var.project_name}-vpc"
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 4.0"
+    }
   }
 }
 
-locals {
-  subnets = {
-    app_a  = { cidr = "10.0.1.0/24", az = "us-east-1a", public = true }
-    app_b  = { cidr = "10.0.2.0/24", az = "us-east-1b", public = true }
-    data_a = { cidr = "10.0.11.0/24", az = "us-east-1a", public = false }
-    data_b = { cidr = "10.0.12.0/24", az = "us-east-1b", public = false }
-    mgmt_a = { cidr = "10.0.21.0/24", az = "us-east-1a", public = false }
-    mgmt_b = { cidr = "10.0.22.0/24", az = "us-east-1b", public = false }
-  }
+provider "azurerm" {
+  features {}
 }
 
-resource "aws_subnet" "subnet" {
-  for_each                = local.subnets
-  vpc_id                  = aws_vpc.main.id
-  cidr_block              = each.value.cidr
-  availability_zone       = each.value.az
-  map_public_ip_on_launch = each.value.public
-
-  tags = {
-    Name = "${var.project_name}-${each.key}"
-  }
+resource "azurerm_resource_group" "project" {
+  name     = var.resource_group_name
+  location = var.location
+  tags     = var.tags
 }
 
-resource "aws_internet_gateway" "main" {
-  vpc_id = aws_vpc.main.id
-
-  tags = {
-    Name = "${var.project_name}-igw"
-  }
+resource "azurerm_virtual_network" "project" {
+  name                = var.vnet_name
+  address_space       = var.vnet_address_space
+  location            = azurerm_resource_group.project.location
+  resource_group_name = azurerm_resource_group.project.name
+  tags                = var.tags
 }
 
-
-resource "aws_route_table" "public" {
-  vpc_id = aws_vpc.main.id
-
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.main.id
-  }
-
-  tags = {
-    Name = "${var.project_name}-public-rt"
-  }
+resource "azurerm_subnet" "app" {
+  name                 = var.app_subnet_name
+  resource_group_name  = azurerm_resource_group.project.name
+  virtual_network_name = azurerm_virtual_network.project.name
+  address_prefixes     = [var.app_subnet_prefix]
 }
 
-
-resource "aws_route_table" "private" {
-  vpc_id = aws_vpc.main.id
-
-  tags = {
-    Name = "${var.project_name}-private-rt"
-  }
+resource "azurerm_subnet" "data" {
+  name                 = var.data_subnet_name
+  resource_group_name  = azurerm_resource_group.project.name
+  virtual_network_name = azurerm_virtual_network.project.name
+  address_prefixes     = [var.data_subnet_prefix]
 }
 
-resource "aws_route_table_association" "assoc" {
-  for_each       = local.subnets
-  subnet_id      = aws_subnet.subnet[each.key].id
-  route_table_id = each.value.public ? aws_route_table.public.id : aws_route_table.private.id
+resource "azurerm_subnet" "management" {
+  name                 = var.management_subnet_name
+  resource_group_name  = azurerm_resource_group.project.name
+  virtual_network_name = azurerm_virtual_network.project.name
+  address_prefixes     = [var.management_subnet_prefix]
 }
 
-resource "aws_security_group" "app" {
-  name        = "${var.project_name}-app-sg"
-  description = "Web traffic to the app tier"
-  vpc_id      = aws_vpc.main.id
-
-  ingress {
-    description = "HTTPS from anywhere"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description = "HTTP from anywhere"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    description = "All outbound"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "${var.project_name}-app-sg"
-  }
+resource "azurerm_network_security_group" "app" {
+  name                = "cloudclimb-project01-app-nsg"
+  location            = azurerm_resource_group.project.location
+  resource_group_name = azurerm_resource_group.project.name
+  tags                = var.tags
 }
 
-resource "aws_security_group" "data" {
-  name        = "${var.project_name}-data-sg"
-  description = "Allow traffic from the app tier"
-  vpc_id      = aws_vpc.main.id
+resource "azurerm_network_security_group" "data" {
+  name                = "cloudclimb-project01-data-nsg"
+  location            = azurerm_resource_group.project.location
+  resource_group_name = azurerm_resource_group.project.name
+  tags                = var.tags
+}
 
-  ingress {
-    description     = "Allow traffic from the app tier"
-    from_port       = 5432
-    to_port         = 5432
-    protocol        = "tcp"
-    security_groups = [aws_security_group.app.id]
+resource "azurerm_network_security_group" "management" {
+  name                = "cloudclimb-project01-management-nsg"
+  location            = azurerm_resource_group.project.location
+  resource_group_name = azurerm_resource_group.project.name
+  tags                = var.tags
+}
+
+resource "azurerm_subnet_network_security_group_association" "app" {
+  subnet_id                 = azurerm_subnet.app.id
+  network_security_group_id = azurerm_network_security_group.app.id
+
+}
+
+resource "azurerm_subnet_network_security_group_association" "data" {
+  subnet_id                 = azurerm_subnet.data.id
+  network_security_group_id = azurerm_network_security_group.data.id
+
+}
+
+resource "azurerm_subnet_network_security_group_association" "management" {
+  subnet_id                 = azurerm_subnet.management.id
+  network_security_group_id = azurerm_network_security_group.management.id
+
+}
+
+resource "azurerm_public_ip" "app_vm" {
+  name                = "cloudclimb-project01-app-pip"
+  location            = azurerm_resource_group.project.location
+  resource_group_name = azurerm_resource_group.project.name
+  allocation_method   = "Static"
+  sku                 = "Standard"
+  tags                = var.tags
+}
+
+resource "azurerm_network_interface" "app_vm" {
+  name                = "cloudclimb-project01-app-nic"
+  location            = azurerm_resource_group.project.location
+  resource_group_name = azurerm_resource_group.project.name
+
+  ip_configuration {
+    name                          = "internal"
+    subnet_id                     = azurerm_subnet.app.id
+    private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.app_vm.id
   }
 
-  egress {
-    description = "All outbound"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+  tags = var.tags
+}
+
+resource "azurerm_network_security_rule" "allow_ssh" {
+  name                       = "Allow-SSH"
+  priority                   = 100
+  direction                  = "Inbound"
+  access                     = "Allow"
+  protocol                   = "Tcp"
+  source_port_range          = "*"
+  destination_port_range     = "22"
+  source_address_prefix      = "YOUR_PUBLIC_IP/32"
+  destination_address_prefix = "*"
+
+  resource_group_name         = azurerm_resource_group.project.name
+  network_security_group_name = azurerm_network_security_group.app.name
+}
+
+resource "azurerm_linux_virtual_machine" "app_vm" {
+  name                = "cloudclimb-project01-app-vm"
+  resource_group_name = azurerm_resource_group.project.name
+  location            = azurerm_resource_group.project.location
+  size                = "Standard_D2s_v7"
+  admin_username      = "azureuser"
+
+  network_interface_ids = [
+    azurerm_network_interface.app_vm.id
+  ]
+
+  admin_ssh_key {
+    username   = "azureuser"
+    public_key = file("~/.ssh/id_ed25519.pub")
   }
 
-  tags = {
-    Name = "${var.project_name}-data-sg"
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
   }
+
+  source_image_reference {
+    publisher = "Canonical"
+    offer     = "0001-com-ubuntu-server-jammy"
+    sku       = "22_04-lts-gen2"
+    version   = "latest"
+  }
+
+  tags = var.tags
 }

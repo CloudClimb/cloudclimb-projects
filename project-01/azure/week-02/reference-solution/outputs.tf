@@ -1,40 +1,48 @@
-output "vpc_id" {
-  description = "The ID of the VPC"
-  value       = aws_vpc.main.id
+output "resource_group_name" {
+  description = "Name of the Resource Group"
+  value       = azurerm_resource_group.project.name
 }
 
-output "internet_gateway_id" {
-  description = "The ID of the Internet Gateway"
-  value       = aws_internet_gateway.main.id
+output "vnet_name" {
+  description = "Name of the Virtual Network"
+  value       = azurerm_virtual_network.project.name
 }
 
-output "public_route_table_id" {
-  description = "The ID of the public route table"
-  value       = aws_route_table.public.id
+output "vnet_id" {
+  description = "Resource ID of the Virtual Network"
+  value       = azurerm_virtual_network.project.id
 }
 
-output "private_route_table_id" {
-  description = "The ID of the private route table"
-  value       = aws_route_table.private.id
+output "app_subnet_id" {
+  description = "Resource ID of the application subnet"
+  value       = azurerm_subnet.app.id
 }
 
-output "data_security_group_id" {
-  description = "The ID of the data security group"
-  value       = aws_security_group.data.id
+output "data_subnet_id" {
+  description = "Resource ID of the data subnet"
+  value       = azurerm_subnet.data.id
 }
 
-output "app_security_group_id" {
-  description = "The ID of the app security group"
-  value       = aws_security_group.app.id
+output "management_subnet_id" {
+  description = "Resource ID of the management subnet"
+  value       = azurerm_subnet.management.id
 }
 
-output "subnet_ids" {
-  description = "The IDs of the subnets"
-  value       = { for name, subnet in aws_subnet.subnet : name => subnet.id }
-
+output "app_vm_name" {
+  value = azurerm_linux_virtual_machine.app_vm.name
 }
 
-output "app_instance_id" {
+output "app_vm_public_ip" {
+  value = azurerm_public_ip.app_vm.ip_address
+}
+
+output "app_vm_private_ip" {
+  value = azurerm_network_interface.app_vm.private_ip_address
+}
+
+output "app_vm_nic_id" {
+  value = azurerm_network_interface.app_vm.id
+}output "app_instance_id" {
   value = aws_instance.app.id
 }
 

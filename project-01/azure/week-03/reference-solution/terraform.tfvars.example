@@ -1,0 +1,51 @@
+# Example Terraform variable values for CloudClimb Project 01
+# Copy this file to terraform.tfvars and replace the placeholder values
+# with values that match your own environment.
+#
+# IMPORTANT:
+# Do not commit your real terraform.tfvars if it contains passwords,
+# personal IP addresses, or other sensitive values.
+
+# Main project resource group and region
+resource_group_name = "cloudclimb-project01-dev-rg"
+location            = "eastus"
+
+# Virtual Network
+vnet_name          = "cloudclimb-project01-vnet"
+vnet_address_space = ["10.10.0.0/16"]
+
+# Application subnet
+app_subnet_name   = "cloudclimb-project01-app-subnet"
+app_subnet_prefix = "10.10.1.0/24"
+
+# Data subnet
+data_subnet_name   = "cloudclimb-project01-data-subnet"
+data_subnet_prefix = "10.10.2.0/24"
+
+# Management subnet
+management_subnet_name   = "cloudclimb-project01-management-subnet"
+management_subnet_prefix = "10.10.3.0/24"
+
+# Replace this with your current public IPv4 address in /32 CIDR format.
+# This controls who can access SSH and Memos.
+#
+# Example:
+# ssh_source_ip = "203.0.113.10/32"
+ssh_source_ip = "YOUR_PUBLIC_IP/32"
+
+# PostgreSQL administrator credentials
+#
+# Use a strong password in your LOCAL terraform.tfvars file.
+# Do not commit a real database password to GitHub.
+postgres_admin_username = "pgadminuser"
+postgres_admin_password = "USE_A_STRONG_PASSWORD_HERE"
+
+# Common tags
+# Change Owner if you are deploying this environment yourself.
+tags = {
+  Environment = "Development"
+  ManagedBy   = "Terraform"
+  Owner       = "YOUR_NAME"
+  Project     = "CloudClimb-Project01"
+  Purpose     = "CloudClimb-Lab"
+}

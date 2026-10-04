@@ -1,4 +1,6 @@
 # Project 01 - Azure Week 04
+
+Terraform CI/CD with GitHub Actions.
 ## Automate Terraform with GitHub Actions
 
 Welcome to Week 04 of Project 01.

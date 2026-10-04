@@ -1,0 +1,53 @@
+output "vpc_id" {
+  description = "The ID of the VPC"
+  value       = aws_vpc.main.id
+}
+
+output "internet_gateway_id" {
+  description = "The ID of the Internet Gateway"
+  value       = aws_internet_gateway.main.id
+}
+
+output "public_route_table_id" {
+  description = "The ID of the public route table"
+  value       = aws_route_table.public.id
+}
+
+output "private_route_table_id" {
+  description = "The ID of the private route table"
+  value       = aws_route_table.private.id
+}
+
+output "data_security_group_id" {
+  description = "The ID of the data security group"
+  value       = aws_security_group.data.id
+}
+
+output "app_security_group_id" {
+  description = "The ID of the app security group"
+  value       = aws_security_group.app.id
+}
+
+output "subnet_ids" {
+  description = "The IDs of the subnets"
+  value       = { for name, subnet in aws_subnet.subnet : name => subnet.id }
+
+}
+
+output "app_instance_id" {
+  value = aws_instance.app.id
+}
+
+output "app_public_ip" {
+  value = aws_instance.app.public_ip
+}
+
+output "db_endpoint" {
+  description = "The RDS PostgreSQL endpoint address (private, VPC-only)"
+  value       = aws_db_instance.main.address
+}
+
+output "db_secret_arn" {
+  description = "ARN of the Secrets Manager secret holding the RDS master credentials"
+  value       = aws_db_instance.main.master_user_secret[0].secret_arn
+}

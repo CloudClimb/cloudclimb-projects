@@ -2,6 +2,9 @@
 
 Terraform CI/CD with GitHub Actions.
 ## Automate Terraform with GitHub Actions
+## CI/CD
+
+GitHub Actions is used to validate the Terraform configuration.
 
 Welcome to Week 04 of Project 01.
 

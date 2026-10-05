@@ -72,6 +72,14 @@ variable "ssh_source_ip" {
   type        = string
 }
 
+# SSH public key used to access the Linux VM
+# This is passed in as a variable so Terraform can run in GitHub Actions
+# without depending on a local ~/.ssh file
+variable "ssh_public_key" {
+  description = "SSH public key used for the Linux VM"
+  type        = string
+}
+
 # PostgreSQL administrator username
 variable "postgres_admin_username" {
   description = "Administrator username for PostgreSQL"

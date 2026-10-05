@@ -12,7 +12,7 @@ permissions:
 jobs:
   terraform:
     runs-on: ubuntu-latest
-  env:
+    env:
       TF_VAR_resource_group_name: "cloudclimb-project01-dev-rg"
       TF_VAR_location: "eastus"
 

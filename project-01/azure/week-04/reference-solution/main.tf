@@ -173,7 +173,7 @@ resource "azurerm_linux_virtual_machine" "app_vm" {
   # Using SSH keys instead of a password
   admin_ssh_key {
     username   = "azureuser"
-    public_key = file("~/.ssh/id_ed25519.pub")
+    public_key = var.ssh_public_key
   }
 
   os_disk {

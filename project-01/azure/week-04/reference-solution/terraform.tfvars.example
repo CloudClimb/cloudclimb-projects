@@ -33,6 +33,14 @@ management_subnet_prefix = "10.10.3.0/24"
 # ssh_source_ip = "203.0.113.10/32"
 ssh_source_ip = "YOUR_PUBLIC_IP/32"
 
+# SSH public key used for the Linux VM.
+# Paste the contents of your public key here.
+# Example file:
+# ~/.ssh/id_ed25519.pub
+#
+# Do NOT paste your private key.
+ssh_public_key = "YOUR_SSH_PUBLIC_KEY"
+
 # PostgreSQL administrator credentials
 #
 # Use a strong password in your LOCAL terraform.tfvars file.

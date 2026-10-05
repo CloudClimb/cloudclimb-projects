@@ -1,5 +1,8 @@
 # Project 01 - Azure Week 04
 ## Automate Terraform with GitHub Actions
+## CI/CD
+
+GitHub Actions is used to validate the Terraform configuration.
 
 Welcome to Week 04 of Project 01.
 

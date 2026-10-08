@@ -12,6 +12,29 @@ permissions:
 jobs:
   terraform:
     runs-on: ubuntu-latest
+    env:
+      TF_VAR_resource_group_name: "cloudclimb-project01-dev-rg"
+      TF_VAR_location: "eastus"
+
+      TF_VAR_vnet_name: "cloudclimb-project01-vnet"
+      TF_VAR_vnet_address_space: '["10.10.0.0/16"]'
+
+      TF_VAR_app_subnet_name: "cloudclimb-project01-app-subnet"
+      TF_VAR_app_subnet_prefix: "10.10.1.0/24"
+
+      TF_VAR_data_subnet_name: "cloudclimb-project01-data-subnet"
+      TF_VAR_data_subnet_prefix: "10.10.2.0/24"
+
+      TF_VAR_management_subnet_name: "cloudclimb-project01-management-subnet"
+      TF_VAR_management_subnet_prefix: "10.10.3.0/24"
+
+      TF_VAR_ssh_source_ip: "203.0.113.10/32"
+      TF_VAR_ssh_public_key: ${{ secrets.TF_VAR_SSH_PUBLIC_KEY }}
+
+      TF_VAR_postgres_admin_username: "pgadminuser"
+      TF_VAR_postgres_admin_password: ${{ secrets.TF_VAR_POSTGRES_ADMIN_PASSWORD }}
+
+      TF_VAR_tags: '{"Environment":"Development","ManagedBy":"Terraform","Owner":"CloudClimb","Project":"CloudClimb-Project01","Purpose":"CloudClimb-Lab"}'
 
     defaults:
       run:
